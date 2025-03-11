@@ -59,4 +59,12 @@ public class GridSystem
             Mathf.RoundToInt(worldPos.z / cellSize)
             );
     }
+
+    public bool IsValidGridPosition(GridPosition gridPosition)
+    {
+        return  gridPosition.x >=0 &&
+                gridPosition.z >=0 &&
+                gridPosition.x < width &&
+                gridPosition.z < height;
+    }
 }
