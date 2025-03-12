@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveAction : MonoBehaviour
+public class MoveAction : BaseAction
 {
     [SerializeField] private Animator unitAnimator;
     [SerializeField] private float MoveSpeed = 4.0f;
@@ -11,37 +12,50 @@ public class MoveAction : MonoBehaviour
     private float stoppingDistance = .1f;
     private float rotatingSpeed = 5f;
     private Vector3 targetPosition;
-    private Unit unit;
-    private void Awake()
+
+
+    protected override void Awake()
     {
-        unit = GetComponent<Unit>();
+        base.Awake();
         targetPosition = transform.position;
-
     }
 
-    public void Move(GridPosition gridPosition)
-    {
-        this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
-    }
+  
 
     
     void Update()
     {
+        if (!isActive)
+        {
+            return;
+        }
+
+        Vector3 moveDir = (targetPosition - transform.position).normalized;
+
         if (Vector3.Distance(transform.position, targetPosition) > stoppingDistance)
         {
-            Vector3 moveDir = (targetPosition - transform.position).normalized;
 
             transform.position += moveDir * Time.deltaTime * MoveSpeed;
-
-            transform.forward = Vector3.Lerp(transform.forward, moveDir, Time.deltaTime * rotatingSpeed);
 
             unitAnimator.SetBool("IsWalking", true);
         }
         else
         {
             unitAnimator.SetBool("IsWalking", false);
+            onActionComplete();
+            isActive = false;
         }
+
+        transform.forward = Vector3.Lerp(transform.forward, moveDir, Time.deltaTime * rotatingSpeed);
     }
+
+    public void Move(GridPosition gridPosition, Action onActionComplete)
+    {
+        this.onActionComplete = onActionComplete;
+        this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        isActive = true;
+    }
+
 
     public List<GridPosition> GetValidActionGridPositionList()
     {
