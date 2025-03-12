@@ -71,7 +71,7 @@ public class MoveAction : MonoBehaviour
                     continue;
                 }
 
-                validGridPositionList.Add(offsetGridPosition);
+                validGridPositionList.Add(testGridPosition);
             }
         }
 
