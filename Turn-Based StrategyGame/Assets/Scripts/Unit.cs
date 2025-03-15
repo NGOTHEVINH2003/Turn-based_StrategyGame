@@ -11,6 +11,7 @@ public class Unit : MonoBehaviour
     private GridPosition gridPosition;
     private MoveAction moveAction;
     private SpinAction spinAction;
+    private int actionPoints = 2;
     private BaseAction[] baseActionArray;
 
 
@@ -40,7 +41,38 @@ public class Unit : MonoBehaviour
         }
 
     }
+    public bool TrySpendActionPoints(BaseAction baseAction)
+    {
+        if (CanSpendActionPoint(baseAction))
+        {
+            SpendActionPoints(baseAction.GetActionPointsCost());
+            return true;
+        }
+        return false;
+    }
+    private void SpendActionPoints(int amount)
+    {
+        actionPoints -= amount;
+    }
 
+
+    public bool CanSpendActionPoint(BaseAction baseAction)
+    {
+        if(actionPoints >= baseAction.GetActionPointsCost())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    public int GetActionPoints()
+    {
+        return actionPoints;
+    }
 
     public SpinAction GetSpinAction() 
     {  

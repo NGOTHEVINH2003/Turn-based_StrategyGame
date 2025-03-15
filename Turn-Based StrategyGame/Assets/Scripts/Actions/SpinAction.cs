@@ -49,4 +49,9 @@ public class SpinAction : BaseAction
         return new List<GridPosition> { unitGridPOistion };
 
     }
+
+    public override int GetActionPointsCost()
+    {
+        return 2;
+    }
 }
