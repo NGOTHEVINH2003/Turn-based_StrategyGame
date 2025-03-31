@@ -13,7 +13,7 @@ public class RagdollSpawner : MonoBehaviour
     {
         healthSystem = GetComponent<HealthSystem>();
 
-        healthSystem.onDead += HealthSystem_OnDead;
+        healthSystem.OnDead += HealthSystem_OnDead;
     }
 
     private void HealthSystem_OnDead(object sender, EventArgs e)
