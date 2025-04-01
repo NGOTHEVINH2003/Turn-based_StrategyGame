@@ -12,14 +12,14 @@ public class Unit : MonoBehaviour
 
 
     public static event EventHandler OnAnyActionPointsChanged;
+    public static event EventHandler OnAnyUnitSpawned;
+    public static event EventHandler OnAnyUnitDead;
 
     [SerializeField] private bool isEnemy;
 
 
     private GridPosition gridPosition;
     private HealthSystem healthSystem;
-    private MoveAction moveAction;
-    private SpinAction spinAction;
     private int actionPoints = 2;
     private BaseAction[] baseActionArray;
 
@@ -27,8 +27,6 @@ public class Unit : MonoBehaviour
     private void Awake()
     {
         healthSystem = GetComponent<HealthSystem>();
-        moveAction = GetComponent<MoveAction>();
-        spinAction = GetComponent<SpinAction>();
         baseActionArray = GetComponents<BaseAction>();
     }
 
@@ -40,6 +38,8 @@ public class Unit : MonoBehaviour
 
         TurnSystem.Instance.OnTurnEnd += TurnSystem_OnTurnEnd;
         healthSystem.OnDead += HealthSystem_OnDead;
+
+        OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
 
     }
 
@@ -94,6 +94,8 @@ public class Unit : MonoBehaviour
     {
         LevelGrid.Instance.RemoveUnitAtGridPos(gridPosition, this);
         Destroy(gameObject);
+
+        OnAnyUnitDead?.Invoke(this, EventArgs.Empty);
     }
 
 
@@ -112,15 +114,23 @@ public class Unit : MonoBehaviour
     }
 
 
+    public T GetAction<T>() where T : BaseAction
+    {
+        foreach(BaseAction baseAction in baseActionArray)
+        {
+            if(baseAction is T)
+            {
+                return (T)baseAction;
+            }
+        }
+        return null;
+    }
+
     public int GetActionPoints()
     {
         return actionPoints;
     }
 
-    public SpinAction GetSpinAction() 
-    {  
-        return spinAction; 
-    } 
 
     public GridPosition GetGridPosition()
     {
@@ -132,16 +142,10 @@ public class Unit : MonoBehaviour
         return transform.position;
     }
 
-    public MoveAction GetMoveAction()
-    {
-        return moveAction;
-    }
-
     public BaseAction[] GetBaseActionsArray()
     {
         return baseActionArray;
-    }
-
+    } 
     public bool IsEnemy()
     {
         return isEnemy;
@@ -151,5 +155,12 @@ public class Unit : MonoBehaviour
     {
         healthSystem.Damage(damageAmount);
     }
+
+
+    public float GetHealthNormalized()
+    {
+        return healthSystem.GetHealthNormalized();
+    }
+  
 
 }
