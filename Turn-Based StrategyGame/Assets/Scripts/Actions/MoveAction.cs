@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,15 +13,8 @@ public class MoveAction : BaseAction
 
     private float stoppingDistance = .1f;
     private float rotatingSpeed = 5f;
-    private Vector3 targetPosition;
-
-
-    protected override void Awake()
-    {
-        base.Awake();
-        targetPosition = transform.position;
-    }
-
+    private List<Vector3> PositionList;
+    private int currentPositionIndex;
   
 
     
@@ -32,7 +25,12 @@ public class MoveAction : BaseAction
             return;
         }
 
+        Vector3 targetPosition = PositionList[currentPositionIndex];
+
         Vector3 moveDir = (targetPosition - transform.position).normalized;
+
+        transform.forward = Vector3.Lerp(transform.forward, moveDir, Time.deltaTime * rotatingSpeed);
+
 
         if (Vector3.Distance(transform.position, targetPosition) > stoppingDistance)
         {
@@ -41,17 +39,30 @@ public class MoveAction : BaseAction
         }
         else
         {
-            OnStopMoving?.Invoke(this, EventArgs.Empty);
-            onActionComplete();
+            currentPositionIndex++;
+            //check if already go to the destination.
+            if(currentPositionIndex >= PositionList.Count)
+            {
+                OnStopMoving?.Invoke(this, EventArgs.Empty);
+                onActionComplete();
+            }
+            
         }
 
-        transform.forward = Vector3.Lerp(transform.forward, moveDir, Time.deltaTime * rotatingSpeed);
+        
     }
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        
-        this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        List<GridPosition> gridPositionLists = PathFinding.Instance.FindPath(unit.GetGridPosition(), gridPosition);
+
+        currentPositionIndex = 0;
+        PositionList = new List<Vector3>();
+
+        foreach(GridPosition gridPos in gridPositionLists)
+        {
+            PositionList.Add(LevelGrid.Instance.GetWorldPosition(gridPos));
+        }
         OnStartMoving?.Invoke(this, EventArgs.Empty);
         ActionStart(onActionComplete);
     }

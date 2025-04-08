@@ -50,9 +50,14 @@ public class CameraController : MonoBehaviour
         {
             inputMoveDir.x = +1f;
         }
+        float accel = 1f;
+        if (Input.GetKey(KeyCode.K))
+        {
+            accel = 2f;
+        }
 
         Vector3 moveVector = transform.forward * inputMoveDir.z + transform.right * inputMoveDir.x;
-        transform.position += moveVector * moveSpeed * Time.deltaTime;
+        transform.position += moveVector * moveSpeed * Time.deltaTime * accel;
 
     }
 
