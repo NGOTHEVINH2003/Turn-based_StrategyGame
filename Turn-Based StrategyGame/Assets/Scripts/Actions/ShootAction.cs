@@ -7,6 +7,7 @@ public class ShootAction : BaseAction
 {
     [SerializeField] private int damage = 40;
 
+    public static event EventHandler<OnShootEventArgs> OnAnyShoot;
     public event EventHandler<OnShootEventArgs> OnShoot;
 
     public class OnShootEventArgs : EventArgs
@@ -24,7 +25,7 @@ public class ShootAction : BaseAction
     private float stateTimer;
     private Unit targetUnit;
     private bool canShootBullet;
-
+    [SerializeField]private LayerMask obstaclesLayerMask;
 
     void Update()
     {
@@ -61,6 +62,11 @@ public class ShootAction : BaseAction
 
     private void Shoot()
     {
+        OnAnyShoot?.Invoke(this, new OnShootEventArgs
+        {
+            targetUnit = targetUnit,
+            shootingUnit = unit
+        }) ;
         OnShoot?.Invoke(this, new OnShootEventArgs
         {
             targetUnit = targetUnit,
@@ -137,6 +143,20 @@ public class ShootAction : BaseAction
                     //check for same Team
                     continue;
                 }
+                Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
+                Vector3 shootDir = (targetUnit.getWorldPosition() - unitWorldPosition).normalized;
+                float unitShoulderHeight = 1.7f;
+                if(
+                    Physics.Raycast(unitWorldPosition + Vector3.up * unitShoulderHeight,
+                        shootDir,
+                        Vector3.Distance(unitWorldPosition, targetUnit.getWorldPosition()),
+                        obstaclesLayerMask)
+                )
+                {
+                    //block by obstacles
+                    continue;
+                }
+
 
                 validGridPositionList.Add(testGridPosition);
             }

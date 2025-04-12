@@ -15,7 +15,7 @@ public class TurnSystem : MonoBehaviour
     {
         if (Instance != null)
         {
-            Debug.Log("More than one Unit Action System!" + transform + "-" + Instance);
+            Debug.Log("More than one Turn System!" + transform + "-" + Instance);
             Destroy(gameObject);
             return;
         }

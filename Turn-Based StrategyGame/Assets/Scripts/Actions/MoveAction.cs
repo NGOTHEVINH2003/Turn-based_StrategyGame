@@ -24,6 +24,11 @@ public class MoveAction : BaseAction
         {
             return;
         }
+        
+        if (currentPositionIndex >= PositionList.Count)
+        {
+            return;
+        }
 
         Vector3 targetPosition = PositionList[currentPositionIndex];
 
@@ -39,9 +44,9 @@ public class MoveAction : BaseAction
         }
         else
         {
-            currentPositionIndex++;
+            if(currentPositionIndex < PositionList.Count) currentPositionIndex++;
             //check if already go to the destination.
-            if(currentPositionIndex >= PositionList.Count)
+            if (currentPositionIndex >= PositionList.Count)
             {
                 OnStopMoving?.Invoke(this, EventArgs.Empty);
                 onActionComplete();
@@ -54,7 +59,7 @@ public class MoveAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        List<GridPosition> gridPositionLists = PathFinding.Instance.FindPath(unit.GetGridPosition(), gridPosition);
+        List<GridPosition> gridPositionLists = PathFinding.Instance.FindPath(unit.GetGridPosition(), gridPosition, out int pathLength);
 
         currentPositionIndex = 0;
         PositionList = new List<Vector3>();
@@ -93,6 +98,23 @@ public class MoveAction : BaseAction
                 if (LevelGrid.Instance.UnitExistOnThisGrid(testGridPosition))
                 {
                     //Grid already exist an unit
+                    continue;
+                }
+
+                if (!PathFinding.Instance.IsWalkableGridPosition(testGridPosition))
+                {
+                    //check when click on obstacles grid.
+                    continue;
+                }
+                if(!PathFinding.Instance.HasPath(unitGridPosition, testGridPosition))
+                {
+                    //no obstacles but also no path to reach destination.
+                    continue;
+                }
+                int pathfindingDistanceMultiplier = 10;
+                if(PathFinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > maxMoveDistance * pathfindingDistanceMultiplier)
+                {
+                    // too far.
                     continue;
                 }
 
