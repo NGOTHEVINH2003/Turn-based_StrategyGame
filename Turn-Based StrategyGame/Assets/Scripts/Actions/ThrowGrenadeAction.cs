@@ -41,6 +41,18 @@ public class ThrowGrenadeAction : BaseAction
                 {
                     continue;
                 }
+
+                if (!PathFinding.Instance.IsWalkableGridPosition(testGridPosition))
+                {
+                    //check when click on obstacles grid.
+                    continue;
+                }
+                if (!PathFinding.Instance.HasPath(unitGridPosition, testGridPosition))
+                {
+                    //no obstacles but also no path to reach destination.
+                    continue;
+                }
+
                 // test shoot range with visual.
                 /*  validGridPositionList.Add(testGridPosition);
                   continue;
@@ -54,7 +66,7 @@ public class ThrowGrenadeAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action  onActionComplete)
     {
-        Transform grenadeProjectileTransform = Instantiate(grenadeProjectilePrefab, unit.getWorldPosition(), Quaternion.identity);
+        Transform grenadeProjectileTransform = Instantiate(grenadeProjectilePrefab, unit.GetWorldPosition(), Quaternion.identity);
         GrenadeProjectile grenadeProjectile = grenadeProjectileTransform.GetComponent<GrenadeProjectile>();
         grenadeProjectile.Setup(gridPosition, OnGrenadeBehaviourComplete);
         ActionStart(onActionComplete);
@@ -71,5 +83,10 @@ public class ThrowGrenadeAction : BaseAction
     private void OnGrenadeBehaviourComplete()
     {
         onActionComplete();
+    }
+
+    public int GetMaxThrowDistance()
+    {
+        return maxThrowDistance;
     }
 }

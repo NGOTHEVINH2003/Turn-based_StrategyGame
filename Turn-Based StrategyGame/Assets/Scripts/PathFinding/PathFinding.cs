@@ -29,8 +29,8 @@ public class PathFinding : MonoBehaviour
             return;
         }
         Instance = this;
-        gridSystem = new GridSystem<PathNode>(10, 10, 2f, 
-            (GridSystem<PathNode> gameObject, GridPosition gridPosition) => new PathNode(gridPosition));
+        /*gridSystem = new GridSystem<PathNode>(10, 10, 2f, 
+            (GridSystem<PathNode> gameObject, GridPosition gridPosition) => new PathNode(gridPosition));*/
         // gridSystem.CreateDebugObjects(gridDebugObjectPrefab);
 
     }
@@ -143,7 +143,7 @@ public class PathFinding : MonoBehaviour
     public int CalculateDistance(GridPosition gridA, GridPosition gridB)
     {
         GridPosition gridPositionDistance = gridA - gridB;
-        int distance = Mathf.Abs(gridPositionDistance.x) + Mathf.Abs(gridPositionDistance.z);
+        //int distance = Mathf.Abs(gridPositionDistance.x) + Mathf.Abs(gridPositionDistance.z);
         int xDistance = Mathf.Abs(gridPositionDistance.x);
         int zDistance = Mathf.Abs(gridPositionDistance.z);
         int remaining = Mathf.Abs(xDistance - zDistance);

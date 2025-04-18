@@ -37,7 +37,7 @@ public class ShootAction : BaseAction
         switch (state)
         {
             case State.Aiming:
-                Vector3 aimDir = (targetUnit.getWorldPosition() - unit.getWorldPosition()).normalized;
+                Vector3 aimDir = (targetUnit.GetWorldPosition() - unit.GetWorldPosition()).normalized;
                 float rotateSpped = 30f;
                 transform.forward = Vector3.Lerp(transform.forward, aimDir, Time.deltaTime * rotateSpped);
 
@@ -144,12 +144,12 @@ public class ShootAction : BaseAction
                     continue;
                 }
                 Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
-                Vector3 shootDir = (targetUnit.getWorldPosition() - unitWorldPosition).normalized;
+                Vector3 shootDir = (targetUnit.GetWorldPosition() - unitWorldPosition).normalized;
                 float unitShoulderHeight = 1.7f;
                 if(
                     Physics.Raycast(unitWorldPosition + Vector3.up * unitShoulderHeight,
                         shootDir,
-                        Vector3.Distance(unitWorldPosition, targetUnit.getWorldPosition()),
+                        Vector3.Distance(unitWorldPosition, targetUnit.GetWorldPosition()),
                         obstaclesLayerMask)
                 )
                 {

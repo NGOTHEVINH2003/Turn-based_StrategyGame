@@ -7,8 +7,8 @@ using UnityEngine.UIElements;
 
 public class Unit : MonoBehaviour
 {
-    private const int ACTION_POINTS_MAX = 3;
-    private const int ACTION_POINTS_ADD = 2;
+    private const int ACTION_POINTS_MAX = 10;
+    private const int ACTION_POINTS_ADD = 5;
 
 
     public static event EventHandler OnAnyActionPointsChanged;
@@ -20,7 +20,7 @@ public class Unit : MonoBehaviour
 
     private GridPosition gridPosition;
     private HealthSystem healthSystem;
-    private int actionPoints = 2;
+    private int actionPoints = 5;
     private BaseAction[] baseActionArray;
 
 
@@ -137,7 +137,7 @@ public class Unit : MonoBehaviour
         return gridPosition;
     }
 
-    public Vector3 getWorldPosition()
+    public Vector3 GetWorldPosition()
     {
         return transform.position;
     }

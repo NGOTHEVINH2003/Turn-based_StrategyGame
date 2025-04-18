@@ -7,11 +7,12 @@ public class LevelGrid : MonoBehaviour
 {
     
 
+
+
     public static LevelGrid Instance { get; private set; }
 
-    public event EventHandler OnAnyUnitMovePosition;
+    public event EventHandler OnAnyUnitMoveToGridPosition;
 
-  
 
     private GridSystem<GridObject> gridSystem;
     [SerializeField] private Transform gridDebugObjectPrefab;
@@ -38,6 +39,17 @@ public class LevelGrid : MonoBehaviour
         PathFinding.Instance.SetUp(width, height, cellSize);
     }
 
+    public IInteractable GetInteractableAtGridPosition(GridPosition gridPosition)
+    {
+        GridObject gridObject = gridSystem.GetGridObject(gridPosition);
+        return gridObject.GetInteractale();
+    }
+    public void SetInteractableAtGridPosition(GridPosition gridPosition, IInteractable interactable)
+    {
+        GridObject gridObject = gridSystem.GetGridObject(gridPosition);
+        gridObject.SetInteractable(interactable);
+    }
+
     public List<Unit> GetUnitAtGridPos(GridPosition gridPosition)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
@@ -60,7 +72,7 @@ public class LevelGrid : MonoBehaviour
     {
         RemoveUnitAtGridPos(from, unit);
         AddUnitAtGridPos(to, unit);
-        OnAnyUnitMovePosition?.Invoke(this, EventArgs.Empty);
+        OnAnyUnitMoveToGridPosition?.Invoke(this, EventArgs.Empty);
     }
 
     public bool UnitExistOnThisGrid(GridPosition gridPosition)
@@ -71,6 +83,7 @@ public class LevelGrid : MonoBehaviour
 
     public int GetWidth() => gridSystem.GetWidth();
     public int GetHeight() => gridSystem.GetHeight();
+    public float GetCellSize() => gridSystem.GetCellSize();
     public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);
     public Vector3 GetWorldPosition(GridPosition gridPosition) => gridSystem.GetWorldPos(gridPosition);
     public bool IsValidGridPosition(GridPosition gridPosition) => gridSystem.IsValidGridPosition(gridPosition);
@@ -81,5 +94,4 @@ public class LevelGrid : MonoBehaviour
         return gridObject.GetUnit();
     }
 
-  
 }
