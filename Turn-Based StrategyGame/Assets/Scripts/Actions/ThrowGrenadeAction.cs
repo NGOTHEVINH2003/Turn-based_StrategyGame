@@ -80,6 +80,11 @@ public class ThrowGrenadeAction : BaseAction
         };
     }
 
+    public override int GetActionPointsCost()
+    {
+        return 2;
+    }
+
     private void OnGrenadeBehaviourComplete()
     {
         onActionComplete();

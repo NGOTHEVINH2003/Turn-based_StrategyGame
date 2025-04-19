@@ -93,7 +93,7 @@ public class GridSystemVisual : MonoBehaviour
                 gridVisualType= GridVisualType.Blue;
                 break;
             case SpinAction spinAction:
-                gridVisualType = GridVisualType.Yellow;
+                gridVisualType= GridVisualType.Blue;
                 break;
         }
 

@@ -7,8 +7,8 @@ using UnityEngine.UIElements;
 
 public class Unit : MonoBehaviour
 {
-    private const int ACTION_POINTS_MAX = 10;
-    private const int ACTION_POINTS_ADD = 5;
+    private const int ACTION_POINTS_MAX = 4;
+    private const int ACTION_POINTS_ADD = 3;
 
 
     public static event EventHandler OnAnyActionPointsChanged;
@@ -20,7 +20,7 @@ public class Unit : MonoBehaviour
 
     private GridPosition gridPosition;
     private HealthSystem healthSystem;
-    private int actionPoints = 5;
+    private int actionPoints = 3;
     private BaseAction[] baseActionArray;
 
 
@@ -154,6 +154,10 @@ public class Unit : MonoBehaviour
     public void Damage(int damageAmount)
     {
         healthSystem.Damage(damageAmount);
+    }
+    public void Heal(int healthAmount)
+    {
+        healthSystem.Heal(healthAmount);
     }
 
 

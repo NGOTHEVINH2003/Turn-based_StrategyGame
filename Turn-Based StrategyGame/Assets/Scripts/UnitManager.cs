@@ -1,6 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UnitManager : MonoBehaviour
@@ -45,6 +46,8 @@ public class UnitManager : MonoBehaviour
             friendlyUnitList.Remove(unit);
         }
 
+        
+
     }
 
     private void Unit_OnAnyUnitSpawned(object sender, System.EventArgs e)
@@ -69,6 +72,7 @@ public class UnitManager : MonoBehaviour
 
     public List<Unit> GetEnemyUnitList()
     {
+        Debug.Log("enemyList: " + enemyUnitList.Count);
         return enemyUnitList;
     }
     public List<Unit> GetFriendlyUnitList()

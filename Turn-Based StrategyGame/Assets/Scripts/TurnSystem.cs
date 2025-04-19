@@ -23,9 +23,18 @@ public class TurnSystem : MonoBehaviour
     }
     public void NextTurn()
     {
-        turnNumber++;
-        isPlayerTurn = !isPlayerTurn;
-        OnTurnEnd?.Invoke(this, EventArgs.Empty);
+        if(UnitManager.Instance.GetEnemyUnitList().Count == 0) {
+            //when no enemy.
+            turnNumber++;
+            isPlayerTurn = true;
+            OnTurnEnd?.Invoke(this, EventArgs.Empty);
+        }
+        else
+        {
+            turnNumber++;
+            isPlayerTurn = !isPlayerTurn;
+            OnTurnEnd?.Invoke(this, EventArgs.Empty);
+        } 
     }
 
     public int GetTurnNumber()

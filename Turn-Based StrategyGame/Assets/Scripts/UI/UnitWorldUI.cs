@@ -16,7 +16,13 @@ public class UnitWorldUI : MonoBehaviour
     {
         Unit.OnAnyActionPointsChanged += Unit_OnAnyActionPointsChanged;
         healthSystem.OnDamage += HealthSystem_OnDamage;
+        healthSystem.OnHeal += HealthSystem_OnHeal;
         UpdateActionPointsText();
+        UpdateHealthBar();
+    }
+
+    private void HealthSystem_OnHeal(object sender, EventArgs e)
+    {
         UpdateHealthBar();
     }
 
