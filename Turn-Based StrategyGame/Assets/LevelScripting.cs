@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelScripting : MonoBehaviour
 {
@@ -20,9 +23,13 @@ public class LevelScripting : MonoBehaviour
     [SerializeField] private Door door4;
     [SerializeField] private Door door5;
 
+    [SerializeField] private Transform panel;
+    [SerializeField] private TextMeshProUGUI gameOverText;
+    [SerializeField] private Button restartButton;
 
 
     private bool hasShownThirdHider = false;
+    private bool winCon = false;
     private void Start()
     {
         door1.OnDoorOpened += (object sender, EventArgs e) =>
@@ -59,10 +66,32 @@ public class LevelScripting : MonoBehaviour
         {
             SetActiveGameObjectList(hider4List, false);
             SetActiveGameObjectList(enemy4List, true);
+            winCon = true;
         };
+
+        UnitManager.Instance.OnDefeated += UnitManager_Instance_OnDefeated;
+        UnitManager.Instance.OnWinning += Instance_OnWinning;
     }
 
-    
+    private void Instance_OnWinning(object sender, EventArgs e)
+    {
+        if (winCon)
+        {
+            panel.gameObject.SetActive(true);
+            gameOverText.text = "YOU WIN!";
+        }
+    }
+
+    private void UnitManager_Instance_OnDefeated(object sender, EventArgs e)
+    {
+        panel.gameObject.SetActive(true);
+        gameOverText.text = "YOU LOSE!";
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
     private void SetActiveGameObjectList(List<GameObject> gameObjectList, bool isActive)
     {

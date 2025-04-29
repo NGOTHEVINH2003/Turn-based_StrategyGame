@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,9 @@ using UnityEngine;
 public class UnitManager : MonoBehaviour
 {
     public static UnitManager Instance { get; private set; }
+
+    public event EventHandler OnDefeated;
+    public event EventHandler OnWinning;
 
     private List<Unit> unitList;
     private List<Unit> friendlyUnitList;
@@ -40,10 +44,18 @@ public class UnitManager : MonoBehaviour
         if (unit.IsEnemy())
         {
             enemyUnitList.Remove(unit);
+            if(enemyUnitList.Count <= 0)
+            {
+                OnWinning?.Invoke(this, EventArgs.Empty);
+            }
         }
         else
         {
             friendlyUnitList.Remove(unit);
+            if(friendlyUnitList.Count <= 0)
+            {
+                OnDefeated?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         

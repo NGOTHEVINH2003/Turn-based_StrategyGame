@@ -14,6 +14,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 251175623923130051, guid: acd40eaa277085d498ab45a7e6663cbf,
         type: 3}
+    - target: {fileID: 3854971281087382007, guid: 28aafbb3002ca6445b27e67bc1477cfb,
+        type: 3}
+      propertyPath: damage
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 6629921831074242410, guid: 28aafbb3002ca6445b27e67bc1477cfb,
         type: 3}
       propertyPath: isEnemy

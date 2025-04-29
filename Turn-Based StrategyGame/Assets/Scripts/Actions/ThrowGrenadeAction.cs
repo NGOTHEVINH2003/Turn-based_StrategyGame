@@ -47,11 +47,6 @@ public class ThrowGrenadeAction : BaseAction
                     //check when click on obstacles grid.
                     continue;
                 }
-                if (!PathFinding.Instance.HasPath(unitGridPosition, testGridPosition))
-                {
-                    //no obstacles but also no path to reach destination.
-                    continue;
-                }
 
                 // test shoot range with visual.
                 /*  validGridPositionList.Add(testGridPosition);
